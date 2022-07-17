@@ -7,9 +7,9 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return '''<h1>Enter subreddit in the request in the format:</h1>
-    <p> 127.0.0.1://python
+    <p> 127.0.0.1://r/python
     <p><h1> You can add a post limit:</h1>
-    <p> 127.0.0.1://python?limit=10'''
+    <p> 127.0.0.1://r/python?limit=10'''
 
 
 @app.route("/r/<subreddit>", methods=['GET', 'POST'])
