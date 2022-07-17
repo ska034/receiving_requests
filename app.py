@@ -9,8 +9,8 @@ def index():
     res = requests.get("https://api.reddit.com/r/python/hot").text
     json_file = json.loads(res)
     return f'''
-    Author: {json_file['data']['children'][0]['data']['author']}\n 
-    Title: {json_file['data']['children'][0]['data']['title']}
+    Author: {json_file['data']['children'][0]['data']['author']} 
+    <p>Title: {json_file['data']['children'][0]['data']['title']}
 '''
 
 
