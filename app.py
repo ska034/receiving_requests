@@ -1,5 +1,6 @@
 import requests, json
-from flask import Flask, request
+from flask import Flask, request, render_template
+from jinja2 import Template
 
 app = Flask(__name__)
 
@@ -21,7 +22,7 @@ def subreddit(subreddit):
         res = requests.get(f"https://api.reddit.com/r/{subreddit}/hot")
 
     if res.status_code != 200:
-        return res.text
+        return render_template('error.html', text=res.text)
     else:
         json_file = json.loads(res.text)
 
@@ -30,12 +31,12 @@ def subreddit(subreddit):
             Author: {i['data']['author']}
             Title: {i['data']['title']}''')
 
-        my_string = ''
-        for i in json_file['data']['children']:
-            my_string += f'''<p>Author: {i['data']['author']}<br>
-            Title: {i['data']['title']}
-            '''
-        return my_string
+        # my_string = ''
+        # for i in json_file['data']['children']:
+        #     my_string += f'''<p>Author: {i['data']['author']}<br>
+        #     Title: {i['data']['title']}
+        #     '''
+        return render_template('subreddits.html', title=subreddit, json_file=json_file)
 
 if __name__ == '__main__':
     app.run(debug=False)
