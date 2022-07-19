@@ -5,7 +5,9 @@
     <title>This subreddit about {{title.lower()}}</title>
 </head>
 <body>
-{% for i in json_file %}
+{% for i in json_file['data']['children'] %}
     <div>Author: {{i['data']['author']}}</div>
+    <div>Title: {{i['data']['title']}}</div>
+{% endfor %}
 </body>
 </html>
