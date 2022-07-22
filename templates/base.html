@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link type="text/css" href="{{url_for('static',filename='css/styles.css')}}" rel="stylesheet">
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>View subreddits</title>
+    {% endblock %}
+</head>
+
+<body>
+{% block header %}
+    <div align="center">
+        <form action="/r/subreddit" method="GET" id="form">
+            <label for="subreddit"></label>
+                <input type="text" name='subreddit' placeholder="Enter a subreddit"  size="30" maxlength="40" class="input-text" required onchange="f()"/>
+            <label for="limit"></label>
+                <input type="text" name="limit" placeholder="Enter a post limit"  size="20" maxlength="3" class="input-text">
+            <input type="submit" value="    Send    " size="20" >
+        </form>
+    </div>
+    <hr>
+    {% endblock %}
+
+{% block content %}
+
+{% endblock%}
+
+<script>
+    function f(){
+        document.getElementById("form").action = "r/" + document.getElementsByName("subreddit")[0].value
+    }
+</script>
+
+</body>
+
+</html>
