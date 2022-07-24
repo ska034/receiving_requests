@@ -1,5 +1,7 @@
 import requests, json
 from flask import Flask, request, render_template
+
+import date
 from date import Date
 from jinja2 import Template
 
@@ -13,12 +15,10 @@ def index():
 
 @app.route("/r/<subreddit>", methods=['GET', 'POST'])
 def subreddit(subreddit):
-
     if request.method == 'GET':
         subreddit = request.args.get('subreddit')
 
     limit = request.args.get('limit') if request.method == 'GET' else request.form.get('limit')
-
 
     if limit:
         res = requests.get(f"https://api.reddit.com/r/{subreddit}/hot?limit={limit}")
@@ -30,30 +30,16 @@ def subreddit(subreddit):
     else:
         json_file = json.loads(res.text)
 
+        subreddits_list = []
+        for i in json_file['data']['children']:
+            subreddit_dict = {}
+            subreddit_dict['author'] = i['data']['author']
+            subreddit_dict['title'] = i['data']['title']
+            subreddit_dict['date_post'] = date.Date(i['data']['created']).date_history()
+            subreddit_dict['url_post'] = i['data']['url']
+            subreddits_list.append(subreddit_dict)
 
-
-        # for i in json_file['data']['children']:
-        #     print(f'''
-        #     Author: {i['data']['author']}
-        #     Title: {i['data']['title']}''')
-
-        return render_template('subreddits.html', title=subreddit, json_file=json_file)
-
-
-@app.route("/test/", methods=["GET"])
-def test():
-    with open('json_file.json', 'r') as file:
-        json_file = json.loads(file.read())
-
-    # for i in json_file['data']['children']:
-    #     print(f'''
-    #     Author: {i['data']['author']}
-    #     Title: {i['data']['title']}''')
-    # if request.method == 'GET':
-    #     print(request.args.get('subreddit'))
-    #     print(request.args.get('limit'))
-
-    return render_template('subreddits.html', title="python", json_file=json_file)
+        return render_template('subreddits.html', title=subreddit, subreddits_list=subreddits_list)
 
 
 if __name__ == '__main__':

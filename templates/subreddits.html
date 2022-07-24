@@ -8,10 +8,15 @@
 <body>
 {% block content %}
 {{ super() }}
-    {% for i in json_file['data']['children'] %}
-        <div class="subreddit-block"><p>Author: {{i['data']['author']}}<br>
-            Title: {{i['data']['title']}}
-            Date: {{i['data']['created']}}</div>
+    {% for i in subreddits_list %}
+    <form>
+        <fieldset class="subreddit-block">
+            <legend><b>{{i['author']}}</b></legend>
+            <i>{{i['date_post']}}</i><br>
+            <p></p>
+            <a href="{{i['url_post']}}">Title: {{i['title']}}</a>
+        </fieldset>
+    </form>
     {% endfor %}
 {% endblock%}
 </body>
