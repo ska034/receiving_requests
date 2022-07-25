@@ -11,11 +11,11 @@
 <body>
 {% block header %}
     <div align="center">
-        <form action="/r/subreddit" method="GET" id="form">
+        <form action="/r/{{title}}" method="GET" id="form">
             <label for="subreddit"></label>
-                <input type="text" name='subreddit' placeholder="Enter a subreddit"  size="30" maxlength="40" class="input-text" required onchange="f()"/>
+                <input type="text" name='subreddit' placeholder="Enter a subreddit"  size="30" maxlength="40" class="input-text" value="{{title}}" required onchange="f()"/>
             <label for="limit"></label>
-                <input type="text" name="limit" placeholder="Enter a post limit"  size="20" maxlength="3" class="input-text">
+                <input type="text" name="limit" placeholder="Enter a post limit"  size="20" maxlength="3" class="input-text" value="{{limit or ''}}">
             <input type="submit" value="    Send    " size="20" >
         </form>
     </div>
@@ -28,7 +28,7 @@
 
 <script>
     function f(){
-        document.getElementById("form").action = "r/" + document.getElementsByName("subreddit")[0].value
+        document.getElementById("form").action = "/r/" + document.getElementsByName("subreddit")[0].value
     }
 </script>
 

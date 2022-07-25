@@ -2,7 +2,11 @@
 
 
 {% block title %}
-    <title>This subreddit about {{title.lower()}}</title>
+    <title>
+        {% if title %}
+            This subreddit about {{title.lower()}}
+        {% endif %}
+    </title>
 {% endblock %}
 
 <body>

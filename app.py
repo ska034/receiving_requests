@@ -16,7 +16,8 @@ def index():
 @app.route("/r/<subreddit>", methods=['GET', 'POST'])
 def subreddit(subreddit):
     if request.method == 'GET':
-        subreddit = request.args.get('subreddit')
+        if request.args.get('subreddit'):
+            subreddit = request.args.get('subreddit')
 
     limit = request.args.get('limit') if request.method == 'GET' else request.form.get('limit')
 
@@ -26,7 +27,7 @@ def subreddit(subreddit):
         res = requests.get(f"https://api.reddit.com/r/{subreddit}/hot")
 
     if res.status_code != 200:
-        return render_template('error.html', text=res.text)
+        return render_template('error.html', text=res.text, title=subreddit, limit=limit)
     else:
         json_file = json.loads(res.text)
 
@@ -39,7 +40,7 @@ def subreddit(subreddit):
             subreddit_dict['url_post'] = i['data']['url']
             subreddits_list.append(subreddit_dict)
 
-        return render_template('subreddits.html', title=subreddit, subreddits_list=subreddits_list)
+        return render_template('subreddits.html', title=subreddit, subreddits_list=subreddits_list, limit=limit)
 
 
 if __name__ == '__main__':
