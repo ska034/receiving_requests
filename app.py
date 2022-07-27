@@ -27,7 +27,10 @@ def subreddit(subreddit):
         res = requests.get(f"https://api.reddit.com/r/{subreddit}/hot")
 
     if res.status_code != 200:
-        return render_template('error.html', text=res.text, title=subreddit, limit=limit)
+        print(res.status_code)
+        return render_template('error.html', text=res.text, title=subreddit, limit=limit,
+                               error_code=res.status_code)
+
     else:
         json_file = json.loads(res.text)
 
@@ -39,8 +42,16 @@ def subreddit(subreddit):
             subreddit_dict['date_post'] = date.Date(i['data']['created']).date_history()
             subreddit_dict['url_post'] = i['data']['url']
             subreddits_list.append(subreddit_dict)
+        if subreddits_list == []:
+            return render_template('error.html', title=subreddit, limit=limit, error_code=404)
+        else:
+            return render_template('subreddits.html', title=subreddit,
+                                   subreddits_list=subreddits_list, limit=limit)
 
-        return render_template('subreddits.html', title=subreddit, subreddits_list=subreddits_list, limit=limit)
+
+@app.errorhandler(404)
+def pageNotFount(error):
+    return render_template('error.html', error_code=404)
 
 
 if __name__ == '__main__':
